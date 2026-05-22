@@ -1,0 +1,242 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.23.7",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "hEou",
+      "code_hash": "6de2b62766c7e17ac25cdcdbd11ec3bd",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "arFx",
+      "code_hash": "88586ed27bf94d85eb3efd65fe4fa37a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"preview\">Preview</h1></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ltss",
+      "code_hash": "7014563e78d17dd0876f640f7ed3c5c1",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"image-viewer\">Image Viewer</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lJDE",
+      "code_hash": "abc0ea6800208ec5a7aba0f75e3281af",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "InSS",
+      "code_hash": "d23346f4ea107c9f669561f483fab420",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TrUO",
+      "code_hash": "a146486fe02894d0f2f673c3b4eda900",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='TrUO-0' random-id='70c2365e-6c5f-5a30-04ef-015a0050d47b'><marimo-dropdown data-initial-value='[&quot;30&quot;]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eSelect a Tile: &#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;30&quot;,&quot;35&quot;,&quot;40&quot;]' data-allow-select-none='false' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Hbol",
+      "code_hash": "9d55968d7cbf252c6aa3edc336c78af3",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "nnJy",
+      "code_hash": "19b1f7a9193fd0c1c02eb7d0640fbadb",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"sample-viewer\">Sample Viewer</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "sqNX",
+      "code_hash": "31157a7c546d51e20d69ca5f9962a269",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"switch-logic\">Switch Logic</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "jbSA",
+      "code_hash": "c8d96d382d693d06728e90e6965ab15d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "DDwZ",
+      "code_hash": "3a81344309fe85190712f7acd5535750",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: row;justify-content: space-between;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='jbSA-0' random-id='bd1544a5-e350-5359-2e1b-70feb1706722'><marimo-switch data-initial-value='false' data-label='null' data-disabled='false'></marimo-switch></marimo-ui-element><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Samples</strong></span></span></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "IstU",
+      "code_hash": "7c74b51d1d224bedec59c7940145b471",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "IRAO",
+      "code_hash": "c5bbaf13ee3dcf5197b9b62748b3e243",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"segmentation\">Segmentation</h1></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SwVU",
+      "code_hash": "7f1f4f830f3d5f463ae29185684632bf",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='SwVU-0' random-id='9ed8a095-12bf-3abd-14f5-9ba56bdd29ec'><marimo-dropdown data-initial-value='[&quot;SAM&quot;]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eSelect Algorithm&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;SAM&quot;,&quot;Felszenswab&quot;,&quot;...&quot;]' data-allow-select-none='false' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "STIC",
+      "code_hash": "b86a6d45fae90eaeb3e7f60bb081154e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"classification\">Classification</h1></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "XCwm",
+      "code_hash": "d6f77d3d4b9500446d71a391a949e421",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='XCwm-0' random-id='e8cea05f-88ac-91f0-0236-275647f9c06c'><marimo-dropdown data-initial-value='[&quot;RF&quot;]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eSelect Classifier&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;RF&quot;,&quot;SVM&quot;,&quot;...&quot;]' data-allow-select-none='false' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BfPr",
+      "code_hash": "a5ce58c2a5dd6854b883e9083425b347",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"large-language-model\">Large Language Model</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "mapa",
+      "code_hash": "11d1fc2b4c7fba7ad3a18de67f6843ea",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='mapa-0' random-id='c8245cd9-9f18-94c8-f080-7c98bb2b2115'><marimo-chatbot data-initial-value='{&quot;messages&quot;:[]}' data-label='null' data-prompts='[&quot;Hello&quot;,&quot;How are you?&quot;]' data-show-configuration-controls='true' data-config='{&quot;max_tokens&quot;:4096,&quot;temperature&quot;:0.5,&quot;top_p&quot;:1,&quot;top_k&quot;:40,&quot;frequency_penalty&quot;:0,&quot;presence_penalty&quot;:0}' data-allow-attachments='false' data-disabled='false'></marimo-chatbot></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "LPJu",
+      "code_hash": "7639f6f653b44488dedb0f3abc0aa93d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"analysis-assistent\">Analysis Assistent</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}

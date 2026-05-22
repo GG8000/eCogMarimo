@@ -1,6 +1,5 @@
 import marimo
 
-__generated_with = "0.23.7"
 app = marimo.App(width="medium", app_title="Segment Labeling")
 
 
