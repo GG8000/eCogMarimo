@@ -222,18 +222,6 @@ def _(mo):
     return
 
 
-@app.cell
-def _(mo):
-    def simple_echo_model(messages, config):
-        return f"You said: {messages[-1].content}"
-
-    mo.ui.chat(
-        simple_echo_model,
-        prompts=["Hello", "How are you?"],
-        show_configuration_controls=True
-    )
-    return
-
 
 @app.cell(hide_code=True)
 def _(mo):
