@@ -147,6 +147,7 @@ Mako==1.3.10
 marimo==0.23.7
 Markdown==3.10.2
 markdown-it-py @ file:///Users/ec2-user/croot/markdown-it-py_1767001648374/work
+markdown2==2.5.5
 MarkupSafe==3.0.3
 matplotlib==3.10.8
 matplotlib-inline @ file:///opt/miniconda3/conda-bld/matplotlib-inline_1762779171616/work
@@ -184,6 +185,7 @@ packaging==24.2
 pandas==2.3.3
 parso @ file:///opt/miniconda3/conda-bld/parso_1762781703500/work
 partd==1.4.2
+pdoc==16.0.0
 pexpect @ file:///opt/miniconda3/conda-bld/pexpect_1762535936187/work
 pillow==12.1.1
 pkce @ file:///Users/builder/cbouss/perseverance-python-buildout/croot/pkce_1728592680499/work
