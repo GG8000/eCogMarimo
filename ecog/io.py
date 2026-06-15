@@ -16,7 +16,7 @@ from rasterio.enums import Resampling
 
 # Where the raster tiles live. This simple app reuses the data folder of the
 # original eCogMarimo project, which sits next to this one.
-DATA_ROOT = Path(__file__).resolve().parents[2] / "eCogMarimo" / "data"
+DATA_ROOT = Path(__file__).resolve().parents[1] / "data"
 
 # Name shown in the dropdown -> the folder that holds that tile.
 TILES = {
