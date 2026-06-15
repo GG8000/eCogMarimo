@@ -1,12 +1,12 @@
 """Ask Google's Gemma model about the analysed scene.
 
-:func:`describe_scene` turns the classification result into a short text summary
-(how many segments and how much area each class covers). :func:`ask` sends that
+:func: describe_scene turns the classification result into a short text summary
+(how many segments and how much area each class covers). :func: ask sends that
 summary plus the user's question to the model and returns the answer.
 
-If the package or API key is missing, :func:`ask` returns a readable message
-instead of raising, so the notebook keeps working offline. Set the API key in
-the environment variable ``GEMINI_API_KEY`` (or ``GOOGLE_API_KEY``).
+If the package or API key is missing, :func: ask returns a readable message
+instead of raising an error, so the notebook keeps working offline. Set the API key in
+the environment variable GEMINI_API_KEY.
 """
 
 import os
@@ -14,7 +14,6 @@ import os
 import numpy as np
 
 MODEL_NAME = "gemma-4-26b-a4b-it"
-
 
 def describe_scene(segments, classification) -> str:
     """Summarise the classification as plain text for the model to read."""
@@ -47,14 +46,14 @@ def build_prompt(question: str, context: str) -> str:
 
 
 def ask(question: str, context: str = "") -> str:
-    """Answer ``question`` about the scene using Gemma, with ``context`` as background.
+    """Answer question about the scene using Gemma, with context as background.
 
     Falls back to a short readable message (instead of raising) when the package
     or API key is missing, or when the API call fails for any reason.
     """
     prompt = build_prompt(question, context)
-    
-    api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+
+    api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         return "LLM offline: set GEMINI_API_KEY to enable answers.\n\nPrompt:\n\n" + prompt
 

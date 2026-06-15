@@ -5,8 +5,7 @@ eCognition workflow on aerial harbour imagery:
 
 > **Load a tile → segment it → label segments → classify → ask an LLM assistant.**
 
-This is a deliberately simple rebuild of the larger `eCogMarimo` project: one
-notebook (`app.py`) plus six tiny, pure-Python modules under `ecog/`. There is
+One notebook (`app.py`) plus pure-Python modules under `ecog/`. There is
 no custom front-end except a ~25-line "report where I clicked" widget — all the
 image drawing happens in Python.
 
@@ -60,6 +59,7 @@ eCogMarimoSimple
 ├── requirements.txt
 └── ecog/             # plain Python, no Marimo, one module per step
     ├── io.py             # load + resample a tile          -> Tile
+    ├── io_lidar.py       # load lidar data                 -> nDSM
     ├── segment.py        # split into segments              -> Segments
     ├── features.py       # describe each segment with numbers
     ├── classify.py       # train a model + colour the result -> Classification
