@@ -1,4 +1,4 @@
-# eCogMarimo · simple
+# eCogMarimo · Interactive Sampler
 
 A small, readable [Marimo](https://marimo.io) notebook that reproduces the core
 eCognition workflow on aerial harbour imagery:
