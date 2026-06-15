@@ -30,8 +30,8 @@ CLASSES = {
 # Name shown in the classifier dropdown -> the model key used below.
 METHODS = {
     "Random Forest": "rf",
-    "Support Vector Machine": "svm",
-    "k-Nearest Neighbour": "knn",
+    #"Support Vector Machine": "svm", # <- Not implemented yet
+    #"k-Nearest Neighbour": "knn", # <- Not implemented yet
 }
 
 
