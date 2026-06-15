@@ -57,6 +57,7 @@ notebook also picks up `../eCogMarimo/.env` automatically if it exists.
 eCogMarimoSimple
 ├── app.py            # the Marimo notebook — wires the steps into a tool
 ├── requirements.txt
+├── data/             # images and lidar data
 └── ecog/             # plain Python, no Marimo, one module per step
     ├── io.py             # load + resample a tile          -> Tile
     ├── io_lidar.py       # load lidar data                 -> nDSM
@@ -87,6 +88,7 @@ between clicks.
 
 | You want to… | Edit |
 |---|---|
+| add data | put image in `data/` + add subfolder in `ecog/io.py` in `TILES` |
 | add a segmentation algorithm | `ecog/segment.py` (`segment_image`) + add its name to `METHODS` |
 | add a classifier | `ecog/classify.py` (`make_model`) + add it to `METHODS` |
 | use better features (e.g. height from the DSM) | `ecog/features.py` (`segment_features`) |
