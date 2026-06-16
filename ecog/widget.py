@@ -20,14 +20,45 @@ from PIL import Image
 
 
 def image_bytes(image: np.ndarray) -> bytes:
-    """Encode an (H, W, 3) uint8 image as PNG bytes (for ``mo.image``)."""
+    """Encode an (H, W, 3) uint8 image as PNG bytes."""
     buffer = BytesIO()
     Image.fromarray(image).save(buffer, format="PNG")
     return buffer.getvalue()
 
 
+def downscale(image: np.ndarray, size: int) -> np.ndarray:
+    """Shrink an (H, W, 3) uint8 photo to ``size`` x ``size`` for display.
+
+    Computation runs on the full-resolution image, but what we embed in the page
+    (the RGB view and the clickable widget) must stay small. A smooth (bilinear)
+    resize is right for a photo; the segment-id map is shrunk separately with
+    :func:`ecog.segment.downscale_segments`, which must keep ids exact.
+    """
+    return np.asarray(Image.fromarray(image).resize((size, size), Image.BILINEAR))
+
+
+def png_data_url(image: np.ndarray) -> str:
+    """Encode an (H, W, 3) uint8 image as a base64 PNG data URL (for ``mo.image``).
+
+    Passing this string to ``mo.image`` embeds the picture straight into the
+    HTML. Passing raw bytes instead makes marimo register a *virtual file*
+    served at its own URL — and those are dropped when a cell re-runs, so in
+    ``marimo run`` the browser can ask for one that no longer exists and the
+    server logs a 404 ("Virtual file not found"). A data URL has nothing to
+    fetch, so it cannot go stale.
+    """
+    return "data:image/png;base64," + base64.b64encode(image_bytes(image)).decode()
+
+
 def data_url(image: np.ndarray) -> str:
-    """Encode an (H, W, 3) uint8 image as a base64 JPEG data URL (for the widget)."""
+    """Encode an (H, W, 3) uint8 image as a base64 JPEG data URL.
+
+    Used for photographic images (the clickable widget and the RGB view): JPEG
+    keeps them small, whereas a base64 PNG of a 1500x1500 photo is ~5 MB and
+    overflows marimo's per-cell output limit. Use :func:`png_data_url` instead
+    for flat-colour images like the classification map, where exact colours
+    matter and PNG stays small.
+    """
     buffer = BytesIO()
     Image.fromarray(image).save(buffer, format="JPEG", quality=85)
     return "data:image/jpeg;base64," + base64.b64encode(buffer.getvalue()).decode()
@@ -136,8 +167,19 @@ class SegmentSampler(anywidget.AnyWidget):
             width: "100%", height: "100%", pointerEvents: "none",
         });
 
+        // The segment borders, drawn here in the browser from the id map rather
+        // than baked into the photo. That keeps the transmitted picture small
+        // (no thousands of hard lines to compress) and keeps the borders a crisp
+        // one pixel wide at every zoom level, so fine segments stay visible.
+        const borderCanvas = document.createElement("canvas");
+        Object.assign(borderCanvas.style, {
+            position: "absolute", top: "0", left: "0",
+            width: "100%", height: "100%", pointerEvents: "none",
+        });
+
         view.appendChild(img);
         view.appendChild(canvas);
+        view.appendChild(borderCanvas);   // borders sit on top of the tint
         viewport.appendChild(view);
         root.appendChild(viewport);
         
@@ -152,9 +194,6 @@ class SegmentSampler(anywidget.AnyWidget):
         const summary = document.createElement("div");
         Object.assign(summary.style, { margin: "8px 0 4px", fontWeight: "bold" });
         root.appendChild(summary);
-        const list = document.createElement("div");
-        Object.assign(list.style, { maxHeight: "180px", overflow: "auto", fontSize: "13px" });
-        root.appendChild(list);
 
         el.appendChild(root);
 
@@ -178,11 +217,35 @@ class SegmentSampler(anywidget.AnyWidget):
                 segIds[i] = data[i * 4] + data[i * 4 + 1] * 256;
             }
             tintArr = new Uint8ClampedArray(natW * natH * 4);
+            drawBorders();
             redraw();
         };
         segImg.src = model.get("seg_src");
 
-        // ---- drawing and the samples list -------------------------------
+        // ---- drawing and the samples summary ----------------------------
+        function drawBorders() {
+            // A pixel is on a border when the segment to its right or below it
+            // has a different id. Drawn once, when the id map loads.
+            if (!segIds) return;
+            borderCanvas.width = natW;
+            borderCanvas.height = natH;
+            const bd = new Uint8ClampedArray(natW * natH * 4);
+            for (let row = 0; row < natH; row++) {
+                for (let col = 0; col < natW; col++) {
+                    const i = row * natW + col;
+                    const id = segIds[i];
+                    const edge =
+                        (col + 1 < natW && segIds[i + 1] !== id) ||
+                        (row + 1 < natH && segIds[i + natW] !== id);
+                    if (edge) {
+                        const j = i * 4;
+                        bd[j] = 0; bd[j + 1] = 0; bd[j + 2] = 205; bd[j + 3] = 255;
+                    }
+                }
+            }
+            borderCanvas.getContext("2d").putImageData(new ImageData(bd, natW, natH), 0, 0);
+        }
+
         function redraw() {
             if (!segIds) return;
             tintArr.fill(0);
@@ -206,16 +269,6 @@ class SegmentSampler(anywidget.AnyWidget):
             summary.textContent = entries.length
                 ? `Training samples (${entries.length}) — ${parts.join(", ")}`
                 : "Training samples: none yet — pick a class and click segments.";
-            const rows = entries
-                .map(([id, name]) => [parseInt(id, 10), name])
-                .sort((a, b) => a[0] - b[0])
-                .map(([id, name]) =>
-                    `<tr><td style="padding:1px 12px 1px 0">${id}</td><td>${name}</td></tr>`)
-                .join("");
-            list.innerHTML = entries.length
-                ? `<table><thead><tr><th style="text-align:left;padding-right:12px">Segment</th>`
-                  + `<th style="text-align:left">Class</th></tr></thead><tbody>${rows}</tbody></table>`
-                : "";
         }
 
         function toggleAt(clientX, clientY) {

@@ -19,8 +19,11 @@ def describe_scene(segments, classification) -> str:
     """Summarise the classification as plain text for the model to read."""
     names = classification.predictions
     total_pixels = segments.labels.size
-    # How many pixels each segment has, so we can add up area per class.
-    pixels_per_segment = np.bincount(segments.labels.ravel(), minlength=segments.count)
+    # How many pixels each segment has, so we can add up area per class. We size
+    # this to the number of predictions (not segments.count) so a stale
+    # classification left over from an earlier segmentation cannot index past the
+    # end — segments missing from the current label map simply count as 0 pixels.
+    pixels_per_segment = np.bincount(segments.labels.ravel(), minlength=len(names))
 
     seg_counts: dict[str, int] = {}
     area: dict[str, int] = {}

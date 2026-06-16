@@ -58,14 +58,14 @@ def make_model(method: str, n_samples: int = 100):
 
 
 
-def classify_segments(image, segments, labels: dict, method: str = "rf") -> Classification:
+def classify_segments(tile, segments, labels: dict, method: str = "rf") -> Classification:
     """Train on the labelled segments, then predict the class of every segment."""
-    X_train, y_train = training_table(image, segments, labels)
+    X_train, y_train = training_table(tile, segments, labels)
 
     model = make_model(method, n_samples=len(y_train))
     model.fit(X_train, y_train)
 
-    predictions = model.predict(all_features(image, segments))
+    predictions = model.predict(all_features(tile, segments))
     return Classification(predictions=list(predictions))
 
 

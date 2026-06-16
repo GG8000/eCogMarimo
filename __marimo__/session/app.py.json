@@ -7,7 +7,7 @@
   "cells": [
     {
       "id": "Hbol",
-      "code_hash": "4650421554876aa1fff034afbbcda252",
+      "code_hash": "104530735a4d4de10a1f2f6eec201b61",
       "outputs": [
         {
           "type": "data",
@@ -38,7 +38,7 @@
         {
           "type": "data",
           "data": {
-            "text/html": "<div style='display: flex;flex: 1;flex-direction: row;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 1rem'><marimo-ui-element object-id='vblA-0' random-id='c7e7952f-562e-318e-768f-b437a0e5082a'><marimo-dropdown data-initial-value='[]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eTile&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;Tile 30&quot;,&quot;Tile 35&quot;,&quot;Tile 40&quot;]' data-allow-select-none='true' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element><marimo-ui-element object-id='vblA-1' random-id='422c1ab6-3d34-f1a7-f3f6-dd8ad60ffe06'><marimo-dropdown data-initial-value='[&quot;SLIC&quot;]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eSegmentation&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;SLIC&quot;,&quot;Felzenszwalb&quot;]' data-allow-select-none='false' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element><marimo-ui-element object-id='vblA-2' random-id='49cefac2-6c2a-fda6-4437-9e34e4bbba0c'><marimo-dropdown data-initial-value='[&quot;Random Forest&quot;]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eClassifier&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;Random Forest&quot;,&quot;Support Vector Machine&quot;,&quot;k-Nearest Neighbour&quot;]' data-allow-select-none='false' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element></div>"
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: row;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 1rem'><marimo-ui-element object-id='vblA-0' random-id='a389cb28-2c43-96b2-94fd-aa0f74e800d3'><marimo-dropdown data-initial-value='[]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eTile&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;Tile 30&quot;,&quot;Tile 35&quot;,&quot;Tile 40&quot;]' data-allow-select-none='true' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element><marimo-ui-element object-id='vblA-1' random-id='13690a41-743d-6b89-4559-e2467888b2cd'><marimo-dropdown data-initial-value='[&quot;SLIC&quot;]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eSegmentation&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;SLIC&quot;,&quot;Felzenszwalb&quot;]' data-allow-select-none='false' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element><marimo-ui-element object-id='vblA-2' random-id='0ef7984f-a0f1-b9cb-c1f6-2dde635d0485'><marimo-dropdown data-initial-value='[&quot;Random Forest&quot;]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eClassifier&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;Random Forest&quot;]' data-allow-select-none='false' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element></div>"
           }
         }
       ],
@@ -46,7 +46,7 @@
     },
     {
       "id": "bkHC",
-      "code_hash": "93f5af87b8766fab60e9fd1de4f34dd9",
+      "code_hash": "cd1067c70776e99f8a1bfb0ef4445949",
       "outputs": [
         {
           "type": "data",
@@ -72,12 +72,32 @@
     },
     {
       "id": "PKri",
-      "code_hash": "d4b9cfaa79ba317db211ca703faa548c",
-      "outputs": [],
+      "code_hash": "42078641c2d481fe97b912bc334c28b8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
       "console": []
     },
     {
       "id": "Xref",
+      "code_hash": "53bb569b5e52bfc1b154109e5b015084",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: row;justify-content: space-between;align-items: flex-start;flex-wrap: nowrap;gap: 2rem'><div style='flex: 1;display: flex;min-width: 0;min-height: 0'><div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"rgb\">RGB</h3></span><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Select a tile to begin.</span></span></div></div><div style='flex: 1;display: flex;min-width: 0;min-height: 0'><div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"segmentation\">Segmentation</h3></span><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Please select a Tile first...</span></span></div></div><div style='flex: 1;display: flex;min-width: 0;min-height: 0'><div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"classification\">Classification</h3></span><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Please select a tile first...</span></span></div></div></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
       "code_hash": "98959b986078499c4ccd4e393c1b7068",
       "outputs": [
         {
@@ -90,26 +110,13 @@
       "console": []
     },
     {
-      "id": "SFPL",
+      "id": "BYtC",
       "code_hash": "6bd1e8e4028d2940b51ffa0c34d0ba11",
       "outputs": [
         {
           "type": "data",
           "data": {
-            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"assistant\">Assistant</h3></span><marimo-ui-element object-id='Xref-2' random-id='7c1a853e-6249-e5c6-ef21-0a1641a6b57e'><marimo-form data-initial-value='null' data-label='null' data-element-id='&quot;Xref-1&quot;' data-loading='false' data-bordered='true' data-submit-button-label='&quot;Ask&quot;' data-submit-button-disabled='false' data-clear-on-submit='false' data-show-clear-button='false' data-clear-button-label='&quot;Clear&quot;' data-should-validate='false'><marimo-ui-element object-id='Xref-1' random-id='e79cc85c-8484-0221-d404-33b8c90a0b40'><marimo-text-area data-initial-value='&quot;&quot;' data-label='null' data-placeholder='&quot;Ask about the scene...&quot;' data-disabled='false' data-debounce='true' data-full-width='true' data-rows='3'></marimo-text-area></marimo-ui-element></marimo-form></marimo-ui-element><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">The provided information does not mention any moons; it only provides classification data for container, impervious, vegetation, and water segments.</span></span></div>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "BYtC",
-      "code_hash": "7f37d0bf8e165b0b8eb32285c86ba94a",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"assistant\">Assistant</h3></span><marimo-ui-element object-id='SFPL-2' random-id='544704a0-4f48-f560-20ff-9fee04810ace'><marimo-form data-initial-value='null' data-label='null' data-element-id='&quot;SFPL-1&quot;' data-loading='false' data-bordered='true' data-submit-button-label='&quot;Ask&quot;' data-submit-button-disabled='false' data-clear-on-submit='false' data-show-clear-button='false' data-clear-button-label='&quot;Clear&quot;' data-should-validate='false'><marimo-ui-element object-id='SFPL-1' random-id='2a8f6e81-9bcf-bb23-7b9f-9036a802a925'><marimo-text-area data-initial-value='&quot;&quot;' data-label='null' data-placeholder='&quot;Ask about the scene...&quot;' data-disabled='false' data-debounce='true' data-full-width='true' data-rows='3'></marimo-text-area></marimo-ui-element></marimo-form></marimo-ui-element><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><em>The answer will appear here.</em></span></span></div>"
           }
         }
       ],
@@ -117,7 +124,7 @@
     },
     {
       "id": "RGSE",
-      "code_hash": "4066cea389cb6177680e24b16e1870b7",
+      "code_hash": "af01533afe4d213bfc3b8940e0579122",
       "outputs": [
         {
           "type": "data",
@@ -130,7 +137,7 @@
     },
     {
       "id": "Kclp",
-      "code_hash": "41f845d7e79a12649c3003f427fdb302",
+      "code_hash": "4066cea389cb6177680e24b16e1870b7",
       "outputs": [
         {
           "type": "data",
@@ -143,7 +150,7 @@
     },
     {
       "id": "emfo",
-      "code_hash": "f52b64a3e9255f574edcd5329a327407",
+      "code_hash": "41f845d7e79a12649c3003f427fdb302",
       "outputs": [
         {
           "type": "data",
@@ -156,7 +163,7 @@
     },
     {
       "id": "Hstk",
-      "code_hash": "931dee13271060b87f8be5f1f0bc65d5",
+      "code_hash": "f52b64a3e9255f574edcd5329a327407",
       "outputs": [
         {
           "type": "data",
@@ -169,7 +176,7 @@
     },
     {
       "id": "nWHF",
-      "code_hash": "6fabf5060ccb1a01c4eeaac97029659c",
+      "code_hash": "9a728761c041a714c69c81e509cc1a3b",
       "outputs": [
         {
           "type": "data",
@@ -182,7 +189,7 @@
     },
     {
       "id": "iLit",
-      "code_hash": "f83c876a40eec6e9239c24d6b3b65336",
+      "code_hash": "6fabf5060ccb1a01c4eeaac97029659c",
       "outputs": [
         {
           "type": "data",
@@ -195,7 +202,7 @@
     },
     {
       "id": "ZHCJ",
-      "code_hash": "cb0834c7d20b5edb1ec3a05fd10dc5ed",
+      "code_hash": "89a661695e22452cafb0fa84fd6992f0",
       "outputs": [
         {
           "type": "data",
@@ -208,7 +215,7 @@
     },
     {
       "id": "ROlb",
-      "code_hash": "b039d6740c620c2f6da4b03acac5fbaa",
+      "code_hash": "cb0834c7d20b5edb1ec3a05fd10dc5ed",
       "outputs": [
         {
           "type": "data",
@@ -221,7 +228,7 @@
     },
     {
       "id": "qnkX",
-      "code_hash": "8d6ac8fb3c2bba4e0d6ac3fc392296eb",
+      "code_hash": "b039d6740c620c2f6da4b03acac5fbaa",
       "outputs": [
         {
           "type": "data",
@@ -230,14 +237,20 @@
           }
         }
       ],
-      "console": [
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "862cf260c2fbddc6ce5d5a766ef866f0",
+      "outputs": [
         {
-          "type": "stream",
-          "name": "stderr",
-          "text": "The truth value of a UIElement is always True. You probably want to call `.value` instead.",
-          "mimetype": "text/plain"
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
         }
-      ]
+      ],
+      "console": []
     }
   ]
 }

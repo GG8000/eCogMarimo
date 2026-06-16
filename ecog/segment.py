@@ -2,14 +2,15 @@
 
 :func:`segment_image` runs one of two classic superpixel algorithms and returns
 a :class:`Segments` object: an integer label image where every pixel carries the
-id of the segment it belongs to. :func:`draw_boundaries` renders those segments
-for display.
+id of the segment it belongs to. :func:`downscale_segments` shrinks that label
+map for display; the segment borders themselves are drawn in the browser by the
+sampler widget, straight from the id map.
 """
 
 from dataclasses import dataclass
 
 import numpy as np
-from skimage.segmentation import slic, felzenszwalb, find_boundaries
+from skimage.segmentation import slic, felzenszwalb
 
 # Names shown in the segmentation dropdown.
 METHODS = ["SLIC", "Felzenszwalb"]
@@ -33,6 +34,7 @@ class Segments:
 
 def segment_image(
     image: np.ndarray,
+    object_heigth: np.ndarray,
     method: str = "SLIC",
     *,
     n_segments: int = 10000,
@@ -44,10 +46,15 @@ def segment_image(
     and how strongly they keep a compact, regular shape. They are ignored by the
     other methods.
     """
-    rgb = image[:, :, :3]
+    # Stack colour and height into one (height, width, 4) image so segmentation
+    # can use both. The height channel is scaled to roughly the 0..255 range of
+    # the colour channels so it carries comparable weight in the distance SLIC
+    # minimises (otherwise metre-scale heights would be drowned out by colour).
+    rgb = image[:, :, :3].astype(np.float64)
+    
     if method == "SLIC":
         # SLIC makes roughly equal-sized, compact superpixels.
-        labels = slic(rgb, n_segments=n_segments, compactness=compactness, start_label=0)
+        labels = slic(rgb, n_segments=n_segments, compactness=compactness, start_label=0, channel_axis=-1)
     elif method == "Felzenszwalb":
         # Felzenszwalb follows the image edges, so segment sizes vary more.
         # TODO Implement Felzenswalb
@@ -58,9 +65,17 @@ def segment_image(
     return Segments(labels=labels.astype(int), count=int(labels.max()) + 1)
 
 
-def draw_boundaries(image: np.ndarray, segments: Segments) -> np.ndarray:
-    """Return a copy of ``image`` with thin lines drawn along the segment borders."""
-    border = find_boundaries(segments.labels, mode="outer")
-    out = image.copy()
-    out[border] = (0, 0, 205)   # a strong blue line
-    return out
+def downscale_segments(segments: Segments, size: int) -> Segments:
+    """Return a ``size`` x ``size`` copy of the label map for display.
+
+    Segmentation runs on the full-resolution image, but the clickable widget
+    needs a much smaller label map (a high-resolution one would be far too big to
+    embed in the page). We pick representative pixels with nearest-neighbour
+    sampling — never averaging — so every id stays an exact, valid segment id.
+    ``count`` is unchanged: the labels collected here index the same segments the
+    classifier trains on. Segments too small to survive the shrink simply cannot
+    be clicked, but are still classified.
+    """
+    rows = np.linspace(0, segments.labels.shape[0] - 1, size).round().astype(int)
+    cols = np.linspace(0, segments.labels.shape[1] - 1, size).round().astype(int)
+    return Segments(labels=segments.labels[np.ix_(rows, cols)], count=segments.count)
