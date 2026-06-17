@@ -1,10 +1,10 @@
 """Ask Google's Gemma model about the analysed scene.
 
-:func: describe_scene turns the classification result into a short text summary
-(how many segments and how much area each class covers). :func: ask sends that
+:func:`describe_scene` turns the classification result into a short text summary
+(how many segments and how much area each class covers). :func:`ask` sends that
 summary plus the user's question to the model and returns the answer.
 
-If the package or API key is missing, :func: ask returns a readable message
+If the package or API key is missing, :func:`ask` returns a readable message
 instead of raising an error, so the notebook keeps working offline. Set the API key in
 the environment variable GEMINI_API_KEY.
 """
@@ -22,7 +22,7 @@ def describe_scene(segments, classification) -> str:
     # How many pixels each segment has, so we can add up area per class. We size
     # this to the number of predictions (not segments.count) so a stale
     # classification left over from an earlier segmentation cannot index past the
-    # end — segments missing from the current label map simply count as 0 pixels.
+    # end, segments missing from the current label map simply count as 0 pixels.
     pixels_per_segment = np.bincount(segments.labels.ravel(), minlength=len(names))
 
     seg_counts: dict[str, int] = {}
