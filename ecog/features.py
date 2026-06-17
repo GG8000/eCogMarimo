@@ -24,19 +24,28 @@ def all_features(tile: Tile, segments: Segments) -> np.ndarray:
     ``std = sqrt(mean_of_squares - mean**2)``. Each row is one segment:
     ``[meanR, meanG, meanB, meanHeight, stdR, stdG, stdB, stdHeight]``.
     """
+    # Flatten the segment map so each pixel can be grouped by segment id.
     ids = segments.labels.ravel()
+
+    # Flatten the image channels and height map into arrays aligned with ids.
     rgb = tile.image[:, :, :3].reshape(-1, 3).astype(np.float64)
     height = tile.ndsm.ravel().astype(np.float64)
+
+    # Build the four per-pixel value streams we summarize for each segment.
     channels = [rgb[:, 0], rgb[:, 1], rgb[:, 2], height]
+
+    # Count pixels in each segment; clamp to 1 so empty segments do not divide by zero.
     pixel_count = np.maximum(np.bincount(ids, minlength=segments.count), 1)
 
     means, stds = [], []
     for values in channels:
+        # Compute per-segment mean and standard deviation from sums and squared sums.
         mean = np.bincount(ids, weights=values, minlength=segments.count) / pixel_count
         mean_sq = np.bincount(ids, weights=values * values, minlength=segments.count) / pixel_count
         means.append(mean)
         stds.append(np.sqrt(np.clip(mean_sq - mean * mean, 0, None)))
 
+    # Concatenate all means followed by all standard deviations.
     return np.column_stack(means + stds).astype(np.float32)
 
 

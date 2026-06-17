@@ -32,11 +32,13 @@ class Segments:
         return self.labels == seg_id
 
 
+
+# When using more seg methods use **kwargs, it takes all additional named arguments 
 def segment_image(
     image: np.ndarray,
     object_heigth: np.ndarray,
     method: str = "SLIC",
-    *,
+    *, # Ensures every arguments afterwards needs to be passed with the name
     n_segments: int = 10000,
     compactness: float = 10,
 ) -> Segments:
@@ -46,19 +48,19 @@ def segment_image(
     and how strongly they keep a compact, regular shape. They are ignored by the
     other methods.
     """
-    # Stack colour and height into one (height, width, 4) image so segmentation
-    # can use both. The height channel is scaled to roughly the 0..255 range of
-    # the colour channels so it carries comparable weight in the distance SLIC
-    # minimises (otherwise metre-scale heights would be drowned out by colour).
     rgb = image[:, :, :3].astype(np.float64)
     
     if method == "SLIC":
         # SLIC makes roughly equal-sized, compact superpixels.
+        # n_segments = kwargs.get("n_segments", 10000)
+        # compactness = kwargs.get("compactness", 10)
         labels = slic(rgb, n_segments=n_segments, compactness=compactness, start_label=0, channel_axis=-1)
     elif method == "Felzenszwalb":
         # Felzenszwalb follows the image edges, so segment sizes vary more.
+        # scale = kwargs.get("scale", 1.0)
+        # sigma = kwargs.get("sigma", 0.8)
         # TODO Implement Felzenswalb
-        pass
+        raise NotImplementedError("Felzenszwalb not implemented yet")
     else:
         # TODO Implement more if you want to
         raise ValueError(f"Unknown method {method!r}. Options: {METHODS}")
@@ -71,7 +73,7 @@ def downscale_segments(segments: Segments, size: int) -> Segments:
     Segmentation runs on the full-resolution image, but the clickable widget
     needs a much smaller label map (a high-resolution one would be far too big to
     embed in the page). We pick representative pixels with nearest-neighbour
-    sampling — never averaging — so every id stays an exact, valid segment id.
+    sampling so every id stays an exact, valid segment id.
     ``count`` is unchanged: the labels collected here index the same segments the
     classifier trains on. Segments too small to survive the shrink simply cannot
     be clicked, but are still classified.

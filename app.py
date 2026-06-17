@@ -52,7 +52,7 @@ def _(mo):
     mo.md("""
     # eCogMarimo · Interactive Sampler
 
-    **Load a tile → set the SLIC sliders and click *Segment* → label segments → click *Classify* → ask the assistant.**
+    **Load a tile -> set the SLIC sliders and click *Segment* -> label segments -> click *Classify* -> ask the assistant.**
     In the sampler, pick a class and click segments to label them. Click a segment again to remove it.
     Scroll to zoom into the map and drag to pan.
     """)
@@ -63,8 +63,8 @@ def _(mo):
 def _(classify, io, mo, segment):
     """The top controls. Their `.value` drives the whole notebook reactively."""
     tile_choice = mo.ui.dropdown(options=io.TILES, label="Tile")
-    method_choice = mo.ui.dropdown(options=segment.METHODS, value="SLIC", label="Segmentation")
-    classifier_choice = mo.ui.dropdown(options=classify.METHODS, value="Random Forest", label="Classifier")
+    method_choice = mo.ui.dropdown(options=segment.METHODS, label="Segmentation")
+    classifier_choice = mo.ui.dropdown(options=classify.METHODS, label="Classifier")
 
     mo.hstack([tile_choice, method_choice, classifier_choice], justify="start", gap=1)
     return classifier_choice, method_choice, tile_choice
@@ -111,8 +111,7 @@ def _(DISPLAY_SIZE, IMAGE_WIDTH, mo, tile, widget):
 
     Built in its own cell so it is encoded once per tile, not on every segment
     click. Shrink to display size first (the full image is much larger), then
-    encode as JPEG, not PNG: a photo this size is several MB as a base64 PNG,
-    which alone exceeds marimo's per-cell output limit; JPEG is far smaller.
+    encode as JPEG
     """
     if tile is None:
         rgb_view = mo.md("Select a tile to begin.")
@@ -124,11 +123,11 @@ def _(DISPLAY_SIZE, IMAGE_WIDTH, mo, tile, widget):
 
 @app.cell
 def _(DISPLAY_SIZE, IMAGE_WIDTH, mo, tile, widget):
-    """The object-height (nDSM) view of the tile, shown in place of the RGB photo
+    """The object-height view of the tile, shown in place of the RGB photo
     when the toggle is on.
 
     Built in its own cell, like the RGB view, so flipping the toggle only swaps
-    which finished picture is shown — neither is re-encoded. The float height map
+    which finished picture is shown neither is re-encoded. The float height map
     is coloured first (ground is dark, taller objects brighter)."""
     if tile is None:
         height_view = mo.md("Select a tile to begin.")
@@ -160,42 +159,50 @@ def _(
     click re-runs this cell it merely re-assembles existing pieces — nothing is
     re-encoded and no image reloads.
     """
+
+    # The left column shows either the RGB photo or the object-height map 
+    # the button under the heading flips between them on each click.
+    if height_toggle.value:
+        left_title, left_image = "**Object height**", height_view
+    else:
+        left_title, left_image = "**RGB**", rgb_view
+
+    # The middle column shows the different parameters for the segmentation methods
+    # Currently only SLIC is implemented
     if method_choice.value == "SLIC":
         _params = mo.vstack([
-            mo.md("**SLIC parameters** — applied when you click *Segment* (SLIC method only)."),
+            mo.md("**SLIC parameters**"),
             n_segments_slider,
             compactness_slider,
             segment_button,
         ])
-    else: _params = None
+    elif method_choice.value =="Felzenszwalb": 
+        _params = mo.md("Felzenszwalb is **not implemented yet**. Please select another Segmentation Algorithm")
+    else: _params = mo.md("Please select a Segmentation Algorithm")
 
+    # if there is no sampled image yet, leave it blank, otherwise show sampler
     if sampler is None:
-        sentence = 'Set the sliders and click **Segment** to create segments.' if _params else method_choice.value + " is not implemented yet."
-        _picture = mo.md(sentence)
+        _picture = mo.md("")
     else:
         _picture = sampler   # the sampler shows the picture and its samples table
-    # Picture first, then the sliders underneath — so the segmentation image
-    # lines up with the RGB and Classification images for side-by-side comparison.
+    # Picture first, then the sliders underneath 
+
+
     if tile_choice.value == None:
-        segmentation_view = mo.md("Please select a Tile first...")
+        segmentation_view = mo.md("Please select a tile first...")
+        left_view = mo.vstack([mo.md(left_title), mo.md("Please select a tile first...")])
     else:
         segmentation_view = mo.vstack([_picture, _params])
+        left_view = mo.vstack([mo.md(left_title), left_image, height_toggle])
 
-    # The left column shows either the RGB photo or the object-height map; the
-    # button under the heading flips between them on each click.
-    if height_toggle.value:
-        left_title, left_image = "### Object height", height_view
-    else:
-        left_title, left_image = "### RGB", rgb_view
-    left_view = mo.vstack([mo.md(left_title), left_image, height_toggle])
 
     # The three steps next to each other: RGB/Height left, segmentation middle,
     # classification right.
     mo.hstack(
         [
             left_view,
-            mo.vstack([mo.md("### Segmentation"), segmentation_view]),
-            mo.vstack([mo.md("### Classification"), class_view]),
+            mo.vstack([mo.md("**Segmentation**"), segmentation_view]),
+            mo.vstack([mo.md("**Classification**"), class_view]),
         ],
         widths="equal",
         gap=2,
@@ -223,12 +230,12 @@ def _(get_classification, llm, llm_form, mo, segments):
 
     answer = ""
     if llm_form.value:
-        # Show the loader above the textarea (not appended below it) while the
+        # Show the loader below the textarea while the
         # answer is generated.
         mo.output.replace(mo.vstack([
             mo.md("### Assistant"),
-            mo.status.spinner(title="Asking the assistant..."),
             llm_form,
+            mo.status.spinner(title="Doing the calculus..."),
         ]))
         answer = llm.ask(llm_form.value, context=context)
 
@@ -244,7 +251,6 @@ def _(get_classification, llm, llm_form, mo, segments):
 def _(COMPUTE_SIZE, io, tile_choice):
     """Load the chosen tile at full resolution (decimated read, still fast)."""
     tile = io.load_tile(tile_choice.value, size=COMPUTE_SIZE) if tile_choice.value else None
-
     return (tile,)
 
 
@@ -389,6 +395,7 @@ def _(
 @app.cell
 def _(
     IMAGE_WIDTH,
+    classifier_choice,
     classify,
     classify_button,
     get_classification,
@@ -416,6 +423,8 @@ def _(
             mo.image(widget.png_data_url(_coloured), rounded=True, width=IMAGE_WIDTH),
             mo.md(_legend),
         ])
+    elif not classifier_choice.value:
+        _result = mo.md("Please select a classification method first.")
     elif segments is None:
         _result = mo.md("Segment a tile first, then label segments and classify.")
 

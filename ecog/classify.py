@@ -42,18 +42,14 @@ class Classification:
     predictions: list   # predictions[seg_id] -> class name
 
 
-def make_model(method: str, n_samples: int = 100):
+def make_model(method: str):
     """Create a fresh scikit-learn model for the chosen ``method`` key."""
     if method == "rf":
-        return RandomForestClassifier(n_estimators=100, random_state=0)
+        return RandomForestClassifier(n_estimators=700, random_state=0)
     if method == "svm":
         # TODO return SVM Model
-        pass
-    if method == "knn":
-        # Never ask for more neighbours than we have training samples.
-        # TODO return knn Model 
-        pass
-    # Add Any Model you want
+        raise NotImplementedError("SVM is not implemented yet.")
+    # TODO Think about other models to add
     raise ValueError(f"Unknown method {method!r}. Options: {list(METHODS.values())}")
 
 
@@ -62,7 +58,7 @@ def classify_segments(tile, segments, labels: dict, method: str = "rf") -> Class
     """Train on the labelled segments, then predict the class of every segment."""
     X_train, y_train = training_table(tile, segments, labels)
 
-    model = make_model(method, n_samples=len(y_train))
+    model = make_model(method)
     model.fit(X_train, y_train)
 
     predictions = model.predict(all_features(tile, segments))

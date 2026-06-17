@@ -5,3 +5,4 @@ __pycache__
 .env
 /site
 *.png
+ecog/io_lidar*
