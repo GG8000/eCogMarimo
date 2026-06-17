@@ -16,6 +16,7 @@ import anywidget
 import traitlets
 import numpy as np
 import marimo as mo
+import matplotlib
 from PIL import Image
 
 
@@ -35,6 +36,20 @@ def downscale(image: np.ndarray, size: int) -> np.ndarray:
     :func:`ecog.segment.downscale_segments`, which must keep ids exact.
     """
     return np.asarray(Image.fromarray(image).resize((size, size), Image.BILINEAR))
+
+
+def colorize_height(ndsm: np.ndarray, max_height: float = 10.0) -> np.ndarray:
+    """Turn the object-height map (metres) into a colour image for display.
+
+    ``ndsm`` is a float array of heights; ``mo.image`` needs a uint8 RGB
+    picture. We clip at ``max_height`` metres, scale to 0..1 and run it through
+    the viridis colour map, so ground level (0 m) reads as dark blue and taller
+    objects shade towards green and yellow. Raise ``max_height`` if the tallest
+    objects all look the same bright yellow (the scale has saturated).
+    """
+    norm = np.clip(ndsm, 0, max_height) / max_height
+    rgb = matplotlib.colormaps["viridis"](norm)[:, :, :3]   # drop the alpha channel
+    return (rgb * 255).astype(np.uint8)
 
 
 def png_data_url(image: np.ndarray) -> str:

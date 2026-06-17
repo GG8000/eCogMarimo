@@ -95,6 +95,17 @@ def _(mo):
 
 
 @app.cell
+def _(mo):
+    """Toggle for the left column: each click flips between the RGB photo and the
+    object-height map. ``on_click`` returns the next value, so its ``.value``
+    swaps between False (RGB) and True (height)."""
+    height_toggle = mo.ui.button(
+        value=False, on_click=lambda shown: not shown, label="Switch RGB / Height"
+    )
+    return (height_toggle,)
+
+
+@app.cell
 def _(DISPLAY_SIZE, IMAGE_WIDTH, mo, tile, widget):
     """The RGB view of the loaded tile.
 
@@ -112,9 +123,28 @@ def _(DISPLAY_SIZE, IMAGE_WIDTH, mo, tile, widget):
 
 
 @app.cell
+def _(DISPLAY_SIZE, IMAGE_WIDTH, mo, tile, widget):
+    """The object-height (nDSM) view of the tile, shown in place of the RGB photo
+    when the toggle is on.
+
+    Built in its own cell, like the RGB view, so flipping the toggle only swaps
+    which finished picture is shown — neither is re-encoded. The float height map
+    is coloured first (ground is dark, taller objects brighter)."""
+    if tile is None:
+        height_view = mo.md("Select a tile to begin.")
+    else:
+        _coloured = widget.colorize_height(tile.ndsm)
+        _view = widget.downscale(_coloured, DISPLAY_SIZE)
+        height_view = mo.image(widget.data_url(_view), rounded=True, width=IMAGE_WIDTH)
+    return (height_view,)
+
+
+@app.cell
 def _(
     class_view,
     compactness_slider,
+    height_toggle,
+    height_view,
     method_choice,
     mo,
     n_segments_slider,
@@ -151,11 +181,19 @@ def _(
     else:
         segmentation_view = mo.vstack([_picture, _params])
 
-    # The three steps next to each other: RGB left, segmentation middle,
+    # The left column shows either the RGB photo or the object-height map; the
+    # button under the heading flips between them on each click.
+    if height_toggle.value:
+        left_title, left_image = "### Object height", height_view
+    else:
+        left_title, left_image = "### RGB", rgb_view
+    left_view = mo.vstack([mo.md(left_title), left_image, height_toggle])
+
+    # The three steps next to each other: RGB/Height left, segmentation middle,
     # classification right.
     mo.hstack(
         [
-            mo.vstack([mo.md("### RGB"), rgb_view]),
+            left_view,
             mo.vstack([mo.md("### Segmentation"), segmentation_view]),
             mo.vstack([mo.md("### Classification"), class_view]),
         ],
@@ -206,7 +244,7 @@ def _(get_classification, llm, llm_form, mo, segments):
 def _(COMPUTE_SIZE, io, tile_choice):
     """Load the chosen tile at full resolution (decimated read, still fast)."""
     tile = io.load_tile(tile_choice.value, size=COMPUTE_SIZE) if tile_choice.value else None
-    
+
     return (tile,)
 
 

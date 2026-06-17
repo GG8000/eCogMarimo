@@ -12,6 +12,7 @@ import laspy
 import numpy as np
 import rasterio
 from scipy.stats import binned_statistic_2d
+from scipy.ndimage import distance_transform_edt, median_filter
 from rasterio.enums import Resampling
 from rasterio.warp import reproject
 
@@ -75,6 +76,21 @@ def load_tile(folder: str, size: int = 1500, data_root: Path = DATA_ROOT) -> Til
     image = np.transpose(bands, (1, 2, 0))
     return Tile(image=stretch_contrast(image), ndsm=ndsm, transform=transform, crs=crs)
 
+def fill_holes(grid: np.ndarray) -> np.ndarray:
+    """Replace NaN cells with the value of the nearest non-NaN cell.
+
+    The rasterised LiDAR has gaps wherever a cell caught no point. Filling them
+    with the nearest measured height closes the gaps without inventing new
+    values, so the later bilinear reproject has no holes to smear across the
+    edges of objects.
+    """
+    holes = np.isnan(grid)
+    if not holes.any():
+        return grid
+    nearest = distance_transform_edt(holes, return_distances=False, return_indices=True)
+    return grid[tuple(nearest)]
+
+
 def load_ndsm(
     folder: str,
     size: int,
@@ -113,23 +129,29 @@ def load_ndsm(
         src_transform = dsm_src.transform
         src_crs = dsm_src.crs
 
-    # 2. Rastern mit robuster Statistik gegen Rauschen
+    # Rasterise the LiDAR onto the DSM's grid, keeping the HIGHEST point in each
+    # cell so object tops (container, car and boat roofs) survive. The cloud is
+    # dense (~80 pts/m2), but the DSM cells are tiny (0.1 m), so on the order of
+    # half of them still catch no point and come back as NaN.
     result = binned_statistic_2d(
         las.y, las.x, las.z,
-        statistic='median',  # Nutzt den mittleren Wert der Zelle, ignoriert hohe Ausreißer
+        statistic='max',
         bins=[height, width],
-        range=[[bounds.bottom, bounds.top], [bounds.left, bounds.right]]
+        range=[[bounds.bottom, bounds.top], [bounds.left, bounds.right]],
     )
+    dsm_lidar = np.flipud(result.statistic)
 
-    dsm_lidar = result.statistic
+    # Fill those empty cells with their nearest measured neighbour. 
+    dsm_lidar = fill_holes(dsm_lidar)
 
-    dsm_lidar = np.flipud(dsm_lidar)
+    # A small median filter removes single-cell spikes (a stray high return)
+    # without rounding off the straight edges of buildings and containers.
+    dsm_lidar = median_filter(dsm_lidar, size=3)
 
-    # Difference of the two surfaces. Empty LiDAR cells come back as NaN; fill
-    # them here, *before* warping, so the bilinear reproject does not smear the
-    # holes into their neighbours.
-    object_height = dsm_lidar - dsm
-    object_height = np.where(np.isnan(object_height), 0.0, object_height).astype(np.float32)
+    # Object height = LiDAR surface (with the moving objects) minus the clean
+    # DSM (with them removed). Any leftover NaN (e.g. DSM nodata) becomes 0.
+    object_height = (dsm_lidar - dsm).astype(np.float32)
+    object_height = np.where(np.isnan(object_height), 0.0, object_height)
 
     # Warp from the DSM's grid onto the tile's pixel grid so the result lines up
     # with `image` and the segment label map.
