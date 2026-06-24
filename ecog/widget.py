@@ -47,6 +47,8 @@ def colorize_height(ndsm: np.ndarray, max_height: float = 10.0) -> np.ndarray:
     objects shade towards green and yellow. Raise ``max_height`` if the tallest
     objects all look the same bright yellow (the scale has saturated).
     """
+    if np.nanmax(ndsm): max_height = np.nanmax(ndsm)
+    
     norm = np.clip(ndsm, 0, max_height) / max_height
     rgb = matplotlib.colormaps["viridis"](norm)[:, :, :3]   # drop the alpha channel
     return (rgb * 255).astype(np.uint8)
@@ -66,7 +68,7 @@ def png_data_url(image: np.ndarray) -> str:
 
 
 def data_url(image: np.ndarray) -> str:
-    """Encode an (H, W, 3) uint8 image as a base64 JPEG data URL.
+    """Encode an (H, W, 3) uint8 image as a base64 JPEG data URL so not the whole image need to be fetched.
 
     Used for photographic images (the clickable widget and the RGB view): JPEG
     keeps them small, whereas a base64 PNG of a 1500x1500 photo is ~5 MB and
@@ -84,16 +86,20 @@ def id_map_url(labels: np.ndarray) -> str:
 
     Each segment id is packed into a pixel's red and green channels
     (``id = red + green * 256``), so the browser can look up which segment any
-    pixel belongs to. This supports up to 65 535 segments, comfortably more than
-    the sliders allow. PNG (not JPEG) is essential here — the ids must survive
-    exactly.
+    pixel belongs to. This supports up to 65 535 segments. PNG is essential here, 
+    the ids must survive exactly.
     """
     ids = labels.astype(np.uint32)
     rgb = np.zeros(ids.shape + (3,), dtype=np.uint8)
+    # Pack the 16-bit segment id into two 8-bit channels so the browser can
+    # reconstruct the id exactly. The low byte (bits 0-7) goes into the red
+    # channel and the high byte (bits 8-15) into the green channel.
+    # id = red + green * 256
     rgb[:, :, 0] = ids & 0xFF
     rgb[:, :, 1] = (ids >> 8) & 0xFF
     buffer = BytesIO()
     Image.fromarray(rgb).save(buffer, format="PNG")
+    
     return "data:image/png;base64," + base64.b64encode(buffer.getvalue()).decode()
 
 
@@ -102,9 +108,10 @@ class SegmentSampler(anywidget.AnyWidget):
 
     Read ``.value["labels"]`` from another cell to get ``{segment_id: class}``
     (ids are strings, as JSON requires). Everything else is input the widget
-    needs and never changes after it is built.
+    needs and never changes after it is built. 
     """
-
+    
+    # traitlets stores the metadata and the states
     image_src = traitlets.Unicode("").tag(sync=True)   # the picture, as a data URL
     seg_src = traitlets.Unicode("").tag(sync=True)      # the packed segment-id map
     classes = traitlets.Dict().tag(sync=True)           # class name -> [r, g, b]
