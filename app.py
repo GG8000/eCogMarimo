@@ -83,8 +83,17 @@ def _(mo):
     compactness_slider = mo.ui.slider(
         1, 50, step=1, value=10, label="Compactness", show_value=True
     )
+    sigma_slider = mo.ui.slider(
+        0.1, 1, step=0.1, value=0.5, label="Sigma", show_value=True
+    )
+    scale_slider = mo.ui.slider(
+        1, 50, step=1, value=25, label="Scale", show_value=True
+    )
+    min_size_slider = mo.ui.slider(
+        1, 100, step=1, value=50, label="Minimum size", show_value=True
+    )
     segment_button = mo.ui.run_button(label="Segment")
-    return compactness_slider, n_segments_slider, segment_button
+    return compactness_slider, n_segments_slider, sigma_slider, scale_slider, min_size_slider, segment_button
 
 
 @app.cell
@@ -151,6 +160,9 @@ def _(
     sampler,
     segment_button,
     tile_choice,
+    sigma_slider,
+    scale_slider,
+    min_size_slider
 ):
     """The viewer: the three steps side by side (RGB / Segmentation / Classification).
 
@@ -168,7 +180,6 @@ def _(
         left_title, left_image = "**RGB**", rgb_view
 
     # The middle column shows the different parameters for the segmentation methods
-    # Currently only SLIC is implemented
     if method_choice.value == "SLIC":
         _params = mo.vstack([
             mo.md("**SLIC parameters**"),
@@ -177,7 +188,13 @@ def _(
             segment_button,
         ])
     elif method_choice.value =="Felzenszwalb": 
-        _params = mo.md("Felzenszwalb is **not implemented yet**. Please select another Segmentation Algorithm")
+        _params = mo.vstack([
+            mo.md("**Felzenszwalb parameters**"),
+            sigma_slider,
+            scale_slider,
+            min_size_slider,
+            segment_button
+        ])
     else: _params = mo.md("Please select a Segmentation Algorithm")
 
     # if there is no sampled image yet, leave it blank, otherwise show sampler

@@ -59,8 +59,7 @@ def segment_image(
         # Felzenszwalb follows the image edges, so segment sizes vary more.
         # scale = kwargs.get("scale", 1.0)
         # sigma = kwargs.get("sigma", 0.8)
-        # TODO Implement Felzenswalb
-        raise NotImplementedError("Felzenszwalb not implemented yet")
+        labels = felzenszwalb(rgb, scale=1, sigma=0.8, min_size=20, channel_axis=-1)
     else:
         # TODO Implement more if you want to
         raise ValueError(f"Unknown method {method!r}. Options: {METHODS}")
