@@ -67,6 +67,7 @@ def ask(question: str, context: str = "") -> str:
         reply = client.models.generate_content(model=MODEL_NAME, contents=prompt)
         return reply.text
     except ImportError:
-        return "LLM offline: install 'google-genai' to enable answers."
+        return f"LLM offline: install 'google-genai' to enable answers.\n\nPrompt:\n\n" + prompt
     except Exception as error:
-        return f"LLM unavailable: {error}"
+        return f"LLM unavailable: {error}\n\nPrompt:\n\n" + prompt
+    
